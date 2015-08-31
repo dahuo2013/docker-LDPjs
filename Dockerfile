@@ -25,31 +25,26 @@ RUN mkdir -p /etc/service/mongodb && \
 RUN mkdir -p /etc/mongodb && cp -p /tmp/docker/mongodb.yml /etc/mongodb/
 VOLUME ["/data/db"]
 
-
-
+# Install Node.js v 0.12.7
+RUN apt-get -y update && \
+    apt-get -y install wget && \
+    apt-get -y install npm && \
+    npm install -g n && \
+    n 0.12.7 && \
+    mkdir -p /data/LDPjs
+# Install Linked Data Platform
+ADD LDPjs /data/LDPjs
+WORKDIR /data/LDPjs
+RUN npm install
 
 # Add a script to run the a Node app
-#ADD nodestart.sh /etc/service/nodestart/run
-
-# Install Node.js v 0.12.7
-#RUN apt-get -y update && \
-#    apt-get -y install wget && \
-#    apt-get -y install npm && \
-#    npm install -g n && \
-#    n 0.12.7 && \
-#    mkdir -p /vol/node/start
-
-# Make sure git is installed
-RUN apt-get -y install git
-# Clone the linked data platform repo
-#RUN git clone https://github.com/spadgett/LDPjs
-#WORKDIR /data/LDPjs
-#RUN npm install
-
+RUN mkdir -p /etc/service/nodestart && \
+  cp /tmp/docker/nodestart.sh /etc/service/nodestart/run && \
+  chmod +x /etc/service/nodestart/run
 # Define mountable directories for mongo and node
 #VOLUME ["/vol/data/db", "/vol/node/start"]
 
-EXPOSE 22 27017 28017 8888
+EXPOSE 22 3000 27017 28017 8888
 CMD ["/sbin/my_init"]
 # Clean up
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

@@ -1,0 +1,3 @@
+[submodule "LDPjs"]
+	path = LDPjs
+	url = https://github.com/spadgett/LDPjs
