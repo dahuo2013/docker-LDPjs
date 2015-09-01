@@ -3,7 +3,13 @@ implimentation
 
 Dockerfile provisions mongodb and [LDPjs](https://github.com/spadgett/LDPjs)
 based on the phusion/baseimage so mongodb can run as a service on the same
-container.
+container. LDPjs is a submodule and must be added before the docker container
+can be built. 
+
+```shell
+git submodule init
+git submodule update
+```
 
 Example from IBM devworks of how to use the [Linked Data Platform](http://www.ibm.com/developerworks/library/wa-data-integration-at-scale-OSLC-and-the-linked-data-platform/index.html)
 
